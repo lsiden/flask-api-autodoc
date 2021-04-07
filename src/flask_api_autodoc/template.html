@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+			margin-left: 40px;
+		}
+		ul {
+			width: 100%;
+			list-style: none;
+			padding-left: 0;
+			padding-right 32pt;
+		}
+		li {
+			padding-top: 8pt;
+			border: thin solid black;
+			background: lightgray;
+		}
+		.item-row {
+			display: flex;
+			flex-flow: row nowrap;
+			line-height: 1.5;
+			padding-left: 10pt;
+		}
+		.item-row.header {
+			font-size: larger;
+			font-weight: bold;
+		}
+		.item-row .url{
+			width: 10cm;
+		}
+		.item-row .methods {
+			width: 6cm;
+		}
+		.py-method-doc {
+			padding: 10pt 8pt;
+			margin-top: 10pt;
+			margin-bottom: 0;
+			background: lightblue;
+		}
+	</style>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+	<h1>REST API Endpoints</h1>
+
+	<ul>
+		<li class="item-row header">
+			<div class="url">URL</div>
+			<div class="methods">Methods</div>
+			<div class="endpont">Endpoint</div>
+		</li>
+		{% for url in urls %}
+			<li>
+				<div class="item-row">
+					<div class="url">{{ url['path']|safe }}</div>
+					<div class="methods">{{ ', '.join(url['http_methods']) }}</div>
+					<div class="py-method">{{ url['py_method_signature'] }}</div>
+				</div>
+				{% if url['doc'] %}
+					<div class="py-method-doc">
+						{{ url['doc']|safe }}
+					</div>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+</body>
+</html>

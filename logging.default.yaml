@@ -1,0 +1,22 @@
+version: 1
+
+root:
+  handlers: [console]
+  level: WARN
+
+loggers:
+    vzwnetops_lib.mongo_client:
+        level: INFO
+
+    vzwnetops_lib.http_auth.vzw_authenticate:
+        level: DEBUG
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: basic
+
+formatters:
+    basic:
+        format: '%(levelname)s %(name)s line %(lineno)d %(message)s'

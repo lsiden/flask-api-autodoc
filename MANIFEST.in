@@ -1,0 +1,1 @@
+include src/flask_api_autodoc/template.html
