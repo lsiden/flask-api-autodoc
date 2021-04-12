@@ -1,24 +1,42 @@
 git_clean := "git clean -xd -e .envrc"
 
-clean-dryrun:
+.PHONY: dist
+
+_clean-dryrun:
 	echo "$(git_clean) -n" | sh
 
-can_clean: clean-dryrun
-	echo -n "Proceed? [y/N] " && read ans && [ $${ans:-N} == y ]
+_can_clean: _clean-dryrun
+	@echo -n "Proceed? [y/N] " && read ans && [ $${ans:-N} == y ]
 
-clean: can_clean
+clean: _can_clean
 	echo "$(git_clean) -f" | sh
 
-dist:
-	pip install build
-	python -m build
+lint:
+	pylint src/
 
 test:
 	pytest
+
+coverage:
+	# https://pytest-cov.readthedocs.io/en/latest/reporting.html
+	pytest --cov-report term-missing --cov=flask_api_autodoc tests/
 
 # https://tox.readthedocs.io/en/latest/
 tox:
 	tox
 
+install:
+	poetry install
+
 install-local:
 	pip install --editable .
+
+dist: clean
+	poetry build
+
+publish-test:
+	# poetry config repositories.test https://test.pypi.org/legacy
+	poetry publish -r test
+
+publish:
+	poetry publish

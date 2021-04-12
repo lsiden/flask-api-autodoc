@@ -5,6 +5,7 @@ import re
 import flask
 
 from flask_api_autodoc.view import render_page
+import flask_api_autodoc.docstring
 
 LOGGER = logging.getLogger(__name__)
 # LOGGER.setLevel(logging.DEBUG)
@@ -12,6 +13,10 @@ LOGGER = logging.getLogger(__name__)
 
 def render_something():
     return 'Lorem ipsum dolor sit amet.'
+
+
+def test_get_leading_indent_0():
+    assert flask_api_autodoc.docstring._get_leading_indent('') == 0
 
 
 def test_rest_api_doc_1():
