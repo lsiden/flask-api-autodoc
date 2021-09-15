@@ -27,6 +27,9 @@ def render_page(template=None, path_prefixes=None):
 
     if path_prefixes:
         rules = filter(partial(_matches_prefix, path_prefixes), rules)
+        
+    if path_exclusions:
+        rules = filter(partial(_matches_exclusion, path_exclusions), rules)
 
     rules = sorted(rules, key=str)
     LOGGER.debug(pformat(rules))
@@ -41,6 +44,8 @@ def render_page(template=None, path_prefixes=None):
 def _matches_prefix(path_prefixes, rule):
     return any(map(lambda prefix: str(rule).startswith(prefix), path_prefixes))
 
+def _matches_exclusion(path_exclusions, rule):
+    return any(map(lambda prefix: str(rule).startswith(prefix) is False, path_exclusions))
 
 def _make_url_templ_item(rule):
     """Returns dict for one item in index.html template.
